@@ -1,3 +1,4 @@
+-- +migrate Up
 create table if not exists application
 (
     id                 bigserial    not null primary key,

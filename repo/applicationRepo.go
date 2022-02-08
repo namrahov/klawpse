@@ -16,7 +16,7 @@ type ApplicationRepo struct {
 func (r ApplicationRepo) GetPageableApplications(offset int, count int, applicationCriteria model.ApplicationCriteria) (*[]model.Application, error) {
 	var applications []model.Application
 	err := Db.Model(&applications).
-		Column("application.*", "Comments", "Documents").
+		Column("application.*").
 		Where("court_name like ?", "%"+applicationCriteria.CourtName+"%").
 		Where("judge_name like ?", "%"+applicationCriteria.JudgeName+"%").
 		Where("person like ?", "%"+applicationCriteria.Person+"%").

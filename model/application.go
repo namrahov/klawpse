@@ -24,10 +24,7 @@ type Application struct {
 	IsChecked       bool         `sql:"is_checked" json:"isChecked"`
 	Status          Status       `sql:"status" json:"status"`
 	StatusHistoryId int64        `sql:"status_history_id" json:"statusHistoryId"`
-	Comments        []Comment    `json:"comments"`
-	Documents       []Document   `json:"documents"`
 	CreatedAt       string       `sql:"created_at" json:"createdAt"`
-	BankDetails     []BankDetail `sql:"-" json:"bankDetails"`
 }
 
 type CustomerType string

@@ -45,27 +45,27 @@ func main() {
 	log.Fatal(http.ListenAndServe(":"+port, router))
 }
 
-func initLogger() {
-	log.SetLevel(log.InfoLevel)
-	if opts.Profile == "dev" {
-		log.SetFormatter(&log.JSONFormatter{})
-	}
-}
-
 func initEnvVars() {
-	if godotenv.Load("profiles/dev.env") != nil {
-		log.Fatal("Error in loading environment variables from: profiles/dev.env")
+	if godotenv.Load("profiles/default.env") != nil {
+		log.Fatal("Error in loading environment variables from: profiles/default.env")
 	} else {
-		log.Info("Environment variables loaded from: profiles/dev.env")
+		log.Info("Environment variables loaded from: profiles/default.env")
 	}
 
-	if opts.Profile != "dev" {
+	if opts.Profile != "default" {
 		profileFileName := "profiles/" + opts.Profile + ".env"
 		if godotenv.Overload(profileFileName) != nil {
 			log.Fatal("Error in loading environment variables from: ", profileFileName)
 		} else {
 			log.Info("Environment variables overloaded from: ", profileFileName)
 		}
+	}
+}
+
+func initLogger() {
+	log.SetLevel(log.InfoLevel)
+	if opts.Profile == "default" {
+		log.SetFormatter(&log.JSONFormatter{})
 	}
 }
 
