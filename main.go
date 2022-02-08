@@ -1,9 +1,16 @@
 package main
 
 import (
+	"github.com/gorilla/mux"
 	"github.com/jessevdk/go-flags"
 	"github.com/joho/godotenv"
+	"github.com/namrahov/klawpse/config"
+	"github.com/namrahov/klawpse/handler"
+	"github.com/namrahov/klawpse/repo"
+	"strconv"
+
 	log "github.com/sirupsen/logrus"
+	"net/http"
 )
 
 var opts struct {
@@ -14,12 +21,28 @@ func main() {
 
 	_, err := flags.Parse(&opts)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	initLogger()
 	initEnvVars()
+	config.LoadConfig()
+	applyLogLevel()
 
+	log.Info("Application is starting with profile: ", opts.Profile)
+
+	err = repo.MigrateDb()
+	if err != nil {
+		log.Fatal(err)
+	}
+	repo.InitDb()
+
+	router := mux.NewRouter()
+
+	handler.ApplicationHandler(router)
+	port := strconv.Itoa(config.Props.Port)
+	log.Info("Starting server at port: ", port)
+	log.Fatal(http.ListenAndServe(":"+port, router))
 }
 
 func initLogger() {
@@ -44,4 +67,8 @@ func initEnvVars() {
 			log.Info("Environment variables overloaded from: ", profileFileName)
 		}
 	}
+}
+
+func applyLogLevel() {
+	log.SetLevel(config.Props.LogLevel)
 }
