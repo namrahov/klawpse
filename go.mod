@@ -3,6 +3,7 @@ module github.com/namrahov/klawpse
 go 1.15
 
 require (
+	github.com/360EntSecGroup-Skylar/excelize v1.4.1 // indirect
 	github.com/alexflint/go-arg v1.4.2 // indirect
 	github.com/go-chi/chi v1.5.4 // indirect
 	github.com/go-pg/pg v8.0.7+incompatible // indirect

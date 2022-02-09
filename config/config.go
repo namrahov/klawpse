@@ -5,7 +5,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const RootPath = "/v1/ecourt"
+const RootPath = "/v1/bracket"
 
 type Args struct {
 	DbHost   string    `arg:"env:DB_CARD_DELIVERY_HOST,required"`
