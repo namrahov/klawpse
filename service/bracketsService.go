@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/360EntSecGroup-Skylar/excelize"
 	log "github.com/sirupsen/logrus"
-	"strconv"
 )
 
 type IBracketsService interface {
@@ -24,16 +23,16 @@ func (b *BracketsService) DetectBracketsType(filePath string) error {
 		log.Fatal(err)
 	}
 
-	for i := 2; i < 10; i++ {
-		brackets := f.GetCellValue("Sheet1", "A"+strconv.Itoa(i))
-		if len(brackets) == 0 {
-			break
-		}
+	rows := f.GetRows("Sheet1")
+	for _, row := range rows {
+		for _, colCell := range row {
 
-		if isValid(brackets) {
-			fmt.Println("Dogru")
-		} else {
-			fmt.Println("Yalnis")
+			if isValid(colCell) {
+				fmt.Println("Dogru")
+			} else {
+				fmt.Println("Yalnis")
+			}
+			break
 		}
 	}
 
