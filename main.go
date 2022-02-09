@@ -6,7 +6,6 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/namrahov/klawpse/config"
 	"github.com/namrahov/klawpse/handler"
-	"github.com/namrahov/klawpse/repo"
 	"strconv"
 
 	log "github.com/sirupsen/logrus"
@@ -31,15 +30,8 @@ func main() {
 
 	log.Info("Application is starting with profile: ", opts.Profile)
 
-	err = repo.MigrateDb()
-	if err != nil {
-		log.Fatal(err)
-	}
-	repo.InitDb()
-
 	router := mux.NewRouter()
 
-	handler.ApplicationHandler(router)
 	handler.BracketsHandler(router)
 	port := strconv.Itoa(config.Props.Port)
 	log.Info("Starting server at port: ", port)
