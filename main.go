@@ -32,7 +32,7 @@ func main() {
 
 	router := mux.NewRouter()
 
-	handler.BracketsHandler(router)
+	handler.PalindromesHandler(router)
 	port := strconv.Itoa(config.Props.Port)
 	log.Info("Starting server at port: ", port)
 	log.Fatal(http.ListenAndServe(":"+port, router))

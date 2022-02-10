@@ -5,7 +5,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const RootPath = "/v1/bracket"
+const RootPath = "/v1/palindrome"
 
 type Args struct {
 	LogLevel log.Level `arg:"env:LOG_LEVEL"`

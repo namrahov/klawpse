@@ -9,28 +9,28 @@ import (
 	"net/http"
 )
 
-type bracketsHandler struct {
-	BracketsService service.IBracketsService
+type palindromeHandler struct {
+	PalindromeService service.IBracketsService
 }
 
-func BracketsHandler(router *mux.Router) *mux.Router {
+func PalindromesHandler(router *mux.Router) *mux.Router {
 	router.Use(mid.Recoverer)
 	router.Use(middleware.RequestParamsMiddleware)
 
-	h := &bracketsHandler{
-		BracketsService: &service.BracketsService{},
+	h := &palindromeHandler{
+		PalindromeService: &service.PalindromeService{},
 	}
 
-	router.HandleFunc(config.RootPath+"/detect", h.detectBracketsType).Methods("POST")
+	router.HandleFunc(config.RootPath+"/detect", h.detectPalindromeOfNumber).Methods("POST")
 
 	return router
 }
 
-func (h *bracketsHandler) detectBracketsType(w http.ResponseWriter, r *http.Request) {
+func (h *palindromeHandler) detectPalindromeOfNumber(w http.ResponseWriter, r *http.Request) {
 
 	filePath := r.URL.Query().Get("filePath")
 
-	err := h.BracketsService.DetectBracketsType(filePath)
+	err := h.PalindromeService.DetectPalindromeOfNumber(filePath)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
