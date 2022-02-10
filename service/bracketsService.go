@@ -27,7 +27,7 @@ func (b *BracketsService) DetectBracketsType(filePath string) error {
 	for _, row := range rows {
 		for _, colCell := range row {
 
-			if isValid(colCell) {
+			if areBracketsShaped(colCell) {
 				fmt.Println("Dogru")
 			} else {
 				fmt.Println("Yalnis")
@@ -39,47 +39,51 @@ func (b *BracketsService) DetectBracketsType(filePath string) error {
 	return nil
 }
 
-func isValid(brackets string) bool {
+func areBracketsShaped(brackets string) bool {
 
-	var stack []int32
+	var list []string
 
-	for _, bracket := range brackets {
-		n := len(stack) - 1
+	for i := 0; i < len(brackets); i++ {
+		var bracket = string(brackets[i])
 
-		if bracket == '}' {
-			if n < 0 {
+		if bracket == "(" || bracket == "[" || bracket == "{" {
+			list = append(list, bracket)
+			continue
+		}
+
+		if len(list) == 0 {
+			return false
+		}
+
+		var check string
+		switch bracket {
+		case ")":
+			check = list[len(list)-1]
+			list = list[:len(list)-1]
+			if check == "{" || check == "[" {
 				return false
 			}
-			current := stack[n]
-			stack = stack[:n]
-			if current != '{' {
+			break
+		case "}":
+			check = list[len(list)-1]
+			list = list[:len(list)-1]
+			if check == "(" || check == "[" {
 				return false
 			}
-		} else if bracket == ']' {
-			if n < 0 {
+			break
+		case "]":
+			check = list[len(list)-1]
+			list = list[:len(list)-1]
+			if check == "(" || check == "{" {
 				return false
 			}
-			current := stack[n]
-			stack = stack[:n]
-			if current != '[' {
-				return false
-			}
-		} else if bracket == ')' {
-			if n < 0 {
-				return false
-			}
-			current := stack[n]
-			stack = stack[:n]
-			if current != '(' {
-				return false
-			}
-		} else {
-			stack = append(stack, bracket)
+			break
 		}
 	}
 
-	if len(stack) == 0 {
+	if len(list) == 0 {
 		return true
 	}
+
 	return false
 }
